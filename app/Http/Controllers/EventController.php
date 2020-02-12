@@ -2,9 +2,10 @@
 
 namespace SVT\Http\Controllers;
 
+use SVT\Event;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::all();
+        return view ('events.index',compact('events'));
     }
 
     /**
@@ -23,7 +25,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view ('customers.create');
+        return view ('events.create');
     }
 
     /**
@@ -34,7 +36,26 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+
+        if ($request->hasFile('Image')) {
+            $file = $request->file('Image');
+            $name = time().$file->getClientOriginalName();
+            $file->move(public_path().'/images/',$name);
+        }
+
+        $event = new Event();
+        $event -> Name = $request -> input ('Name');
+        $event -> Type_event = $request -> input ('TypeEvent');
+        $event -> Artist = $request -> input ('Artist');
+        $event -> Date = $request -> input ('Date');
+        $event -> State = $request -> input ('State');
+        $event -> Municipality = $request -> input ('Municipality');
+        $event -> Address = $request -> input ('Address');
+        $event -> Descripcion = $request -> input ('Descripcion');
+        $event -> Image =$name;
+        $event -> save();
+        return 'Saved';
+        //return $request->all();
     }
 
     /**
@@ -43,9 +64,10 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Event $event)
     {
-        //
+        //$event = Event::find($id);
+        return view ('events.show',compact('event'));
     }
 
     /**
