@@ -11,7 +11,7 @@
             <h5 class="card-title">{{$event->Name}}</h5>
             <p class="card-text">{{$event->Type_event}}</p>
             <p class="card-text">{{$event->Descripcion}}</p>
-            <a href="/events/{{$event->id}}" class="btn btn-primary">Go somewhere</a>
+            <a href="/events/{{$event->slug}}" class="btn btn-primary">Go somewhere</a>
             </div>
             </div>
         </div>

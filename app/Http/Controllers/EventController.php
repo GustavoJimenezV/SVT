@@ -67,6 +67,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         //$event = Event::find($id);
+        //$event = Event::where('slug','=',$slug)->firstOrFail();
         return view ('events.show',compact('event'));
     }
 
@@ -76,9 +77,9 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Event $event)
     {
-        //
+        return view ('events.edit',compact('event'));
     }
 
     /**
@@ -88,9 +89,17 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $event->fill($request->except('Image'));
+        if ($request->hasFile('Image')) {
+            $file = $request->file('Image');
+            $name = time().$file->getClientOriginalName();
+            $event->Image = $name;
+            $file->move(public_path().'/images/',$name);
+        }
+        $event->save();
+        return 'Updated';
     }
 
     /**

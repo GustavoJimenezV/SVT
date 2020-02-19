@@ -6,6 +6,8 @@
     <div class="text-center">
 
         <h5 class="card-title">{{$event->Name}}</h5>
-
+        <p class="card-text">{{$event->Descripcion}}</p>
+        <a href="/events/{{$event->slug}}/edit" class="btn btn-primary">Edit</a>
     </div>
+
 @endsection
